@@ -22,8 +22,10 @@ deploy:
   stage: deploy
   script:
     - whoami
-    - rsync -Pavz  frontend/ /home/moha251mmed/frontend/
-    - rsync -Pavz  spi/ /home/moha251mmed/api/
+    - pwd
+    - ls -la /home/moha251mmed/builds/p-SUiSoCa/0/tecnologia-emergente/ci-cdw/
+    - rsync -Pavz frontend/ /home/moha251mmed/frontend/
+    - rsync -Pavz spi/ /home/moha251mmed/api/
   when: manual 
   only:
     - main
