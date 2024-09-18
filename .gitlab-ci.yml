@@ -12,20 +12,16 @@ build:
   script:
     - whoami
     - pwd
-  only:
-    - master
+
 
 deploy:
   tags:
     - cicd 
   stage: deploy
   script:
-    - mkdir -p ~/.ssh
-    - echo "$SSH_PRIVATE_KEY" | base64 --decode > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - ssh-keyscan -H 34.172.67.5 >> ~/.ssh/known_hosts
-    - rsync -Pavz -e "ssh -o StrictHostKeyChecking=no" frontend/ your_username@34.172.67.5:/home/your_username/frontend/
-    - rsync -Pavz -e "ssh -o StrictHostKeyChecking=no" api/ your_username@34.172.67.5:/home/your_username/api/
+    - whoami
+    - rsync -Pavz  frontend/ /home/moha251mmed/frontend/
+    - rsync -Pavz  spi/ /home/moha251mmed/api/
   when: manual 
   only:
-    - master
+    - main
