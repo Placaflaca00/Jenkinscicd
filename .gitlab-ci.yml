@@ -12,6 +12,8 @@ build:
   script:
     - whoami
     - pwd
+  only:
+    - main
 
 
 deploy:
