@@ -22,6 +22,7 @@ testing:
     - cicd
   stage: testing
   script:
+    - export PYTHONPATH=$PYTHONPATH:$CI_PROJECT_DIR  # Agrega la raíz del proyecto al PYTHONPATH
     - pip install -r requirements.txt  # Instala las dependencias necesarias
     - pytest --maxfail=1 --disable-warnings  # Ejecuta pytest
   only:
