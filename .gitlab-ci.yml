@@ -1,6 +1,4 @@
-image:
-  name: python:3.9
-  entrypoint: ["/bin/bash", "-c"] 
+image: python:3.9  # Usa la imagen de Python directamente sin especificar entrypoint
 
 stages:
   - build
@@ -36,7 +34,9 @@ deploy:
   stage: deploy
   script:
     - whoami
+    - mkdir -p /home/moha251mmed/frontend  # Crea el directorio si no existe
     - rsync -Pavz /home/moha251mmed/frontend/ /home/moha251mmed/frontend/
+    - mkdir -p /home/moha251mmed/api  # Crea el directorio si no existe
     - rsync -Pavz /home/moha251mmed/api/ /home/moha251mmed/api/
   when: manual 
   only:
