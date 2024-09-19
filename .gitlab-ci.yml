@@ -36,11 +36,11 @@ deploy:
     - cicd  # Usa el runner existente
   stage: deploy
   before_script:
-    - apt-get update && apt-get install -y rsync openssh-client  # Instala rsync y SSH
-    - mkdir -p ~/.ssh  # Crea el directorio SSH
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa  # Agrega la clave SSH privada
-    - chmod 600 ~/.ssh/id_rsa  # Asegura los permisos correctos de la clave
-    - ssh-keyscan -H 34.44.156.58 >> ~/.ssh/known_hosts  # Agrega tu servidor a los hosts conocidos
+  - apt-get update && apt-get install -y rsync openssh-client
+  - mkdir -p ~/.ssh
+  - echo "$SSH_PRIVATE_KEY_BASE64" | base64 -d > ~/.ssh/id_rsa
+  - chmod 600 ~/.ssh/id_rsa
+  - ssh-keyscan -H 34.44.156.58 >> ~/.ssh/known_hosts
   script:
     - whoami
     - rsync -Pavz -e "ssh -o StrictHostKeyChecking=no" frontend/ moha251mmed@34.44.156.58:/var/frontend/  # Copia la carpeta frontend
