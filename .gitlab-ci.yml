@@ -38,10 +38,8 @@ deploy:
   script:
     - apt-get update && apt-get install -y rsync  # Instalar rsync en el contenedor
     - whoami
-    - mkdir -p /home/moha251mmed/frontend
-    - rsync -Pavz /home/moha251mmed/frontend/ /home/moha251mmed/frontend/
-    - mkdir -p /home/moha251mmed/api
-    - rsync -Pavz /home/moha251mmed/api/ /home/moha251mmed/api/
+    - rsync -Pavz frontend/ /var/frontend/
+    - rsync -Pavz api/ /var/api/
   when: manual
   allow_failure: true
   only:
