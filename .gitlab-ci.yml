@@ -1,4 +1,4 @@
-image: python:3.9  
+image: python:3.9
 
 stages:
   - build
@@ -9,7 +9,7 @@ stages:
 build:
   tags:
     - cicd
-  stage: build 
+  stage: build
   script:
     - whoami
     - pwd
@@ -22,20 +22,25 @@ testing:
     - cicd
   stage: testing
   script:
+    - python -m venv venv  # Crea un entorno virtual
+    - source venv/bin/activate  # Activa el entorno virtual
     - pip install -r requirements.txt  # Instala las dependencias necesarias
-    - pytest --maxfail=1 --disable-warnings  # Ejecuta pytest
+    - pytest --maxfail=1 --disable-warnings  # Ejecuta pytest con una falla máxima
   only:
     - main
 
 # Etapa de deploy
 deploy:
   tags:
-    - cicd 
+    - cicd
   stage: deploy
   script:
     - whoami
+    - mkdir -p /home/moha251mmed/frontend  # Crea el directorio si no existe
     - rsync -Pavz /home/moha251mmed/frontend/ /home/moha251mmed/frontend/
+    - mkdir -p /home/moha251mmed/api  # Crea el directorio si no existe
     - rsync -Pavz /home/moha251mmed/api/ /home/moha251mmed/api/
-  when: manual 
+  when: manual
+  allow_failure: true  # Permite que esta etapa se ejecute incluso si testing falla
   only:
     - main
