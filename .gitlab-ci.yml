@@ -1,10 +1,11 @@
-image: busybox
+image: python:3.9  
 
 stages:
   - build
   - testing
   - deploy
 
+# Etapa de build
 build:
   tags:
     - cicd
@@ -15,7 +16,18 @@ build:
   only:
     - main
 
+# Etapa de testing con pytest
+testing:
+  tags:
+    - cicd
+  stage: testing
+  script:
+    - pip install -r requirements.txt  # Instala las dependencias necesarias
+    - pytest --maxfail=1 --disable-warnings  # Ejecuta pytest
+  only:
+    - main
 
+# Etapa de deploy
 deploy:
   tags:
     - cicd 
