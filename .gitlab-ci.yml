@@ -43,4 +43,4 @@ deploy:
   when: manual
   allow_failure: true
   only:
-    - main
+    - main #test de automizacion
