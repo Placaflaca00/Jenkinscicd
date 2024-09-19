@@ -8,7 +8,7 @@ stages:
 # Etapa de build
 build:
   tags:
-    - cicd
+    - cicd  # Etiqueta agregada para el runner
   stage: build
   script:
     - whoami
@@ -19,7 +19,7 @@ build:
 # Etapa de testing con pytest
 testing:
   tags:
-    - cicd
+    - cicd  # Etiqueta agregada para el runner
   stage: testing
   script:
     - python -m venv venv  # Crea el entorno virtual
@@ -33,7 +33,7 @@ testing:
 # Etapa de deploy
 deploy:
   tags:
-    - cicd
+    - cicd  # Etiqueta agregada para el runner
   stage: deploy
   script:
     - apt-get update && apt-get install -y rsync  # Instalar rsync en el contenedor
@@ -43,4 +43,4 @@ deploy:
   when: manual
   allow_failure: true
   only:
-    - main #test de autmoatico
+    - main
