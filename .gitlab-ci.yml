@@ -22,10 +22,11 @@ testing:
     - cicd
   stage: testing
   script:
-    - python -m venv venv  # Crea un entorno virtual
+    - python -m venv venv  # Crea el entorno virtual
     - source venv/bin/activate  # Activa el entorno virtual
+    - export PYTHONPATH=$PYTHONPATH:$CI_PROJECT_DIR  # Añade el directorio del proyecto al PYTHONPATH
     - pip install -r requirements.txt  # Instala las dependencias necesarias
-    - pytest --maxfail=1 --disable-warnings  # Ejecuta pytest con una falla máxima
+    - pytest --maxfail=1 --disable-warnings  # Ejecuta pytest
   only:
     - main
 
@@ -36,11 +37,11 @@ deploy:
   stage: deploy
   script:
     - whoami
-    - mkdir -p /home/moha251mmed/frontend  # Crea el directorio si no existe
+    - mkdir -p /home/moha251mmed/frontend
     - rsync -Pavz /home/moha251mmed/frontend/ /home/moha251mmed/frontend/
-    - mkdir -p /home/moha251mmed/api  # Crea el directorio si no existe
+    - mkdir -p /home/moha251mmed/api
     - rsync -Pavz /home/moha251mmed/api/ /home/moha251mmed/api/
   when: manual
-  allow_failure: true  # Permite que esta etapa se ejecute incluso si testing falla
+  allow_failure: true
   only:
     - main
