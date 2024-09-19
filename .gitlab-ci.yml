@@ -1,4 +1,6 @@
-image: python:3.9  
+image:
+  name: python:3.9
+  entrypoint: ["/bin/bash", "-c"] 
 
 stages:
   - build
