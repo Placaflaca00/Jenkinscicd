@@ -26,11 +26,7 @@ testing:
     - source venv/bin/activate  # Activa el entorno virtual
     - export PYTHONPATH=$PYTHONPATH:$CI_PROJECT_DIR  # Añade el directorio del proyecto al PYTHONPATH
     - pip install -r requirements.txt  # Instala las dependencias necesarias
-    - pytest --maxfail=1 --disable-warnings --junitxml=report.xml  # Ejecuta pytest y genera el reporte JUnit
-  artifacts:
-    when: always
-    reports:
-      junit: report.xml  # Asegúrate de que el reporte se guarda en el directorio de trabajo del contenedor Docker
+    - pytest --maxfail=1 --disable-warnings  # Ejecuta pytest
   only:
     - main
 
@@ -52,3 +48,4 @@ deploy:
   when: manual
   only:
     - main
+
