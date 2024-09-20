@@ -40,11 +40,11 @@ deploy:
   - mkdir -p ~/.ssh
   - echo "$SSH_PRIVATE_KEY_BASE64" | base64 -d > ~/.ssh/id_rsa
   - chmod 600 ~/.ssh/id_rsa
-  - ssh-keyscan -H 34.44.156.58 >> ~/.ssh/known_hosts
+  - ssh-keyscan -H 162.222.183.188 >> ~/.ssh/known_hosts
   script:
     - whoami
-    - rsync -Pavz -e "ssh -o StrictHostKeyChecking=no" frontend/ moha251mmed@34.44.156.58:/var/frontend/  # Copia la carpeta frontend
-    - rsync -Pavz -e "ssh -o StrictHostKeyChecking=no" api/ moha251mmed@34.44.156.58:/var/api/  # Copia la carpeta api
+    - rsync -Pavz -e "ssh -o StrictHostKeyChecking=no" frontend/ moha251mmed@162.222.183.188:/var/frontend/  # Copia la carpeta frontend
+    - rsync -Pavz -e "ssh -o StrictHostKeyChecking=no" api/ moha251mmed@162.222.183.188:/var/api/  # Copia la carpeta api
   when: manual
   only:
     - main
