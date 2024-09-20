@@ -16,7 +16,7 @@ build:
   only:
     - main
 
-# Etapa de testing con pytest
+# Etapa de testing con pytest y artifacts
 testing:
   tags:
     - cicd  # Etiqueta agregada para el runner
@@ -26,7 +26,11 @@ testing:
     - source venv/bin/activate  # Activa el entorno virtual
     - export PYTHONPATH=$PYTHONPATH:$CI_PROJECT_DIR  # Añade el directorio del proyecto al PYTHONPATH
     - pip install -r requirements.txt  # Instala las dependencias necesarias
-    - pytest --maxfail=1 --disable-warnings  # Ejecuta pytest
+    - pytest --maxfail=1 --disable-warnings --junitxml=report.xml  # Ejecuta pytest y genera el reporte en formato JUnit
+  artifacts:
+    when: always  # Siempre guarda los artefactos, incluso si la ejecución falla
+    reports:
+      junit: report.xml  # Subir el reporte de pruebas en formato JUnit
   only:
     - main
 
@@ -40,12 +44,11 @@ deploy:
   - mkdir -p ~/.ssh
   - echo "$SSH_PRIVATE_KEY_BASE64" | base64 -d > ~/.ssh/id_rsa
   - chmod 600 ~/.ssh/id_rsa
-  - ssh-keyscan -H 162.222.183.188 >> ~/.ssh/known_hosts
+  - ssh-keyscan -H 34.29.173.5 >> ~/.ssh/known_hosts
   script:
     - whoami
-    - rsync -Pavz -e "ssh -o StrictHostKeyChecking=no" frontend/ moha251mmed@162.222.183.188:/var/frontend/  # Copia la carpeta frontend
-    - rsync -Pavz -e "ssh -o StrictHostKeyChecking=no" api/ moha251mmed@162.222.183.188:/var/api/  # Copia la carpeta api
+    - rsync -Pavz -e "ssh -o StrictHostKeyChecking=no" frontend/ moha251mmed@34.29.173.5:/var/frontend/  # Copia la carpeta frontend
+    - rsync -Pavz -e "ssh -o StrictHostKeyChecking=no" api/ moha251mmed@34.29.173.5:/var/api/  # Copia la carpeta api
   when: manual
   only:
     - main
-
