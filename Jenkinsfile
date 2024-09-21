@@ -1,5 +1,8 @@
 pipeline {
     agent { label 'Ubuntu-Agent' }
+    tools {
+        git 'Default' 
+    }
     stages {
         stage('Build') {
             steps {
