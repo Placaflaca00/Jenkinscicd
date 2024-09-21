@@ -25,8 +25,8 @@ pipeline {
             steps {
                 sshagent(['gcp-ssh-key']) {
                     sh '''
-                        rsync -Pavz -e "ssh -o StrictHostKeyChecking=no" frontend/ usuario@ip_de_tu_vm:/var/frontend/
-                        rsync -Pavz -e "ssh -o StrictHostKeyChecking=no" api/ usuario@ip_de_tu_vm:/var/api/
+                        rsync -Pavz -e "ssh -o StrictHostKeyChecking=no" frontend/ moha251mmed@:34.68.41.66:/var/frontend/
+                        rsync -Pavz -e "ssh -o StrictHostKeyChecking=no" api/ moha251mmed@34.68.41.66:/var/api/
                     '''
                 }
             }
