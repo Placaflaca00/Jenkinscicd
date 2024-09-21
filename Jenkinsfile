@@ -13,6 +13,14 @@ pipeline {
         }
 
         stage('Checkout') {
+        steps {
+            sshagent(['github-ssh-key']) {
+                sh 'git clone git@github.com:Placaflaca00/Jenkinscicd.git .'
+                }
+            }
+        }
+
+        stage('Checkout') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'github-credentials', usernameVariable: 'GITHUB_USERNAME', passwordVariable: 'GITHUB_TOKEN')]) {
                     sh 'git clone https://$GITHUB_USERNAME:$GITHUB_TOKEN@github.com/Placaflaca00/Jenkinscicd.git .'
