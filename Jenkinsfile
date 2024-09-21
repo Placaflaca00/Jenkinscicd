@@ -1,9 +1,13 @@
 pipeline {
-    agent { label 'Ubuntu-Agent' }
-    tools {
-        git 'Default' 
-    }
+   agent { label 'Ubuntu-Agent' }
     stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    credentialsId: 'github-pat',
+                    url: 'https://github.com/Placaflaca00/Jenkinscicd.git'
+            }
+        }
         stage('Build') {
             steps {
                 echo 'Construyendo...'
