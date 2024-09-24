@@ -24,7 +24,7 @@ pipeline {
             steps {
                 sshagent(['jenkins-ssh-key']) {
                     bat '''
-                    rsync -Pavz -e "ssh -o StrictHostKeyChecking=no" frontend/ jenkins@<VM_IP>:/var/frontend/
+                    rsync -Pavz -e "ssh -o StrictHostKeyChecking=no" frontend/ moha251mmed@34.67.33.86:/var/frontend/
                     '''
                 }
             }
@@ -33,7 +33,7 @@ pipeline {
             steps {
                 sshagent(['jenkins-ssh-key']) {
                     bat '''
-                    rsync -Pavz -e "ssh -o StrictHostKeyChecking=no" api/ jenkins@<VM_IP>:/var/api/
+                    rsync -Pavz -e "ssh -o StrictHostKeyChecking=no" api/ moha251mmed@34.67.33.86:/var/api/
                     '''
                 }
             }
