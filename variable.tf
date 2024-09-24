@@ -14,5 +14,5 @@ variable "zone" {
 
 variable "credentials_file" {
   description = "Ruta al archivo de credenciales JSON"
-  default     = "C:\Users\moha2\Downloads\tecnologai-emergente-21743d2517e8.json"
+  default     = "C:/Users/moha2/Downloads/tecnologai-emergente-21743d2517e8.json"
 }
