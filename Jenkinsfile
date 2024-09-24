@@ -4,6 +4,11 @@ pipeline {
         GOOGLE_APPLICATION_CREDENTIALS = credentials('gcp-service-accountw')
         TF_VAR_project_id = 'tecnologai-emergente'
     }
+    stage('Terraform Init') {
+    steps {
+        bat 'terraform init -backend-config="bucket=my-terraform-state-bucket" -backend-config="prefix=terraform/state"'
+            }
+    }
     stages {
         stage('Checkout') {
             steps {
