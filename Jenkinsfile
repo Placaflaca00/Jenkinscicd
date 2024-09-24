@@ -12,7 +12,7 @@ pipeline {
         }
         stage('Terraform Init') {
             steps {
-                bat 'terraform init -backend-config="bucket=my-terraform-state-bucket" -backend-config="prefix=terraform/state"'
+                bat 'terraform init -backend-config="bucket=my-terraform-state-bucketw" -backend-config="prefix=terraform/state"'
             }
         }
         stage('Terraform Apply') {
