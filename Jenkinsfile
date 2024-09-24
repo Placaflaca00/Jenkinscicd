@@ -4,11 +4,6 @@ pipeline {
         GOOGLE_APPLICATION_CREDENTIALS = credentials('gcp-service-accountw')
         TF_VAR_project_id = 'tecnologai-emergente'
     }
-    stage('Terraform Init') {
-    steps {
-        bat 'terraform init -backend-config="bucket=my-terraform-state-bucketw" -backend-config="prefix=terraform/state"'
-            }
-    }
     stages {
         stage('Checkout') {
             steps {
@@ -17,12 +12,30 @@ pipeline {
         }
         stage('Terraform Init') {
             steps {
-                bat 'terraform init'
+                bat 'terraform init -backend-config="bucket=my-terraform-state-bucket" -backend-config="prefix=terraform/state"'
             }
         }
         stage('Terraform Apply') {
             steps {
                 bat 'terraform apply --auto-approve'
+            }
+        }
+        stage('Synchronize Frontend') {
+            steps {
+                sshagent(['jenkins-ssh-key']) {
+                    bat '''
+                    rsync -Pavz -e "ssh -o StrictHostKeyChecking=no" frontend/ jenkins@<VM_IP>:/var/frontend/
+                    '''
+                }
+            }
+        }
+        stage('Synchronize API') {
+            steps {
+                sshagent(['jenkins-ssh-key']) {
+                    bat '''
+                    rsync -Pavz -e "ssh -o StrictHostKeyChecking=no" api/ jenkins@<VM_IP>:/var/api/
+                    '''
+                }
             }
         }
     }
