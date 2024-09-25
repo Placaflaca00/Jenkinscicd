@@ -22,19 +22,19 @@ pipeline {
         }
         stage('Synchronize Frontend') {
             steps {
-                sshagent(['jenkins-ssh-key']) {
-                    bat '''
-                    rsync -Pavz -e "ssh -o StrictHostKeyChecking=no" frontend/ moha251mmed@34.67.33.86:/var/frontend/
-                    '''
+                withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-ssh-key', keyFileVariable: 'SSH_KEY_FILE', usernameVariable: 'SSH_USER')]) {
+                    bat """
+                    rsync -Pavz -e "ssh -i %SSH_KEY_FILE% -o StrictHostKeyChecking=no" frontend/ %SSH_USER%@34.67.33.86:/var/frontend/
+                    """
                 }
             }
         }
         stage('Synchronize API') {
             steps {
-                sshagent(['jenkins-ssh-key']) {
-                    bat '''
-                    rsync -Pavz -e "ssh -o StrictHostKeyChecking=no" api/ moha251mmed@34.67.33.86:/var/api/
-                    '''
+                withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-ssh-key', keyFileVariable: 'SSH_KEY_FILE', usernameVariable: 'SSH_USER')]) {
+                    bat """
+                    rsync -Pavz -e "ssh -i %SSH_KEY_FILE% -o StrictHostKeyChecking=no" api/ %SSH_USER%@34.67.33.86:/var/api/
+                    """
                 }
             }
         }
