@@ -3,6 +3,7 @@ pipeline {
     environment {
         GOOGLE_APPLICATION_CREDENTIALS = credentials('gcp-service-accountw')
         TF_VAR_project_id = 'tecnologai-emergente'
+        VM_IP = '34.67.33.86'  // Reemplaza con la IP de tu VM
     }
     stages {
         stage('Checkout') {
@@ -10,33 +11,35 @@ pipeline {
                 git url: 'https://github.com/Placaflaca00/Jenkinscicd.git', branch: 'main'
             }
         }
-        stage('Terraform Init') {
+        stage('Build') {
             steps {
-                bat 'terraform init -backend-config="bucket=my-terraform-state-bucketw" -backend-config="prefix=terraform/state" -input=false -reconfigure -force-copy'
+                bat 'python -m pip install --upgrade pip'
+                bat 'pip install -r requirements.txt'
             }
         }
-        stage('Terraform Apply') {
+        stage('Test') {
             steps {
-                bat 'terraform apply --auto-approve'
+                bat 'pytest --junitxml=test-results.xml'
+            }
+            post {
+                always {
+                    junit 'test-results.xml'
+                }
             }
         }
-        stage('Synchronize Frontend') {
+        stage('Deploy') {
             steps {
                 withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-ssh-key', keyFileVariable: 'SSH_KEY_FILE', usernameVariable: 'SSH_USER')]) {
                     bat """
-                    rsync -Pavz -e "ssh -i %SSH_KEY_FILE% -o StrictHostKeyChecking=no" frontend/ %SSH_USER%@34.67.33.86:/var/frontend/
+                    scp -i %SSH_KEY_FILE% -o StrictHostKeyChecking=no -r app %SSH_USER%@%VM_IP%:/var/app/
                     """
                 }
             }
         }
-        stage('Synchronize API') {
-            steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-ssh-key', keyFileVariable: 'SSH_KEY_FILE', usernameVariable: 'SSH_USER')]) {
-                    bat """
-                    rsync -Pavz -e "ssh -i %SSH_KEY_FILE% -o StrictHostKeyChecking=no" api/ %SSH_USER%@34.67.33.86:/var/api/
-                    """
-                }
-            }
+    }
+    post {
+        always {
+            cleanWs()
         }
     }
 }
