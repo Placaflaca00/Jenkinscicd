@@ -18,15 +18,18 @@ pipeline {
             }
         }
         stage('Test') {
-            steps {
-                bat 'pytest --junitxml=test-results.xml'
-            }
-            post {
-                always {
-                    junit 'test-results.xml'
-                }
+        steps {
+            bat '''
+            set PYTHONPATH=%CD%
+            pytest --junitxml=test-results.xml
+            '''
+        }
+        post {
+            always {
+                junit 'test-results.xml'
             }
         }
+    }
         stage('Deploy') {
             steps {
                 withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-ssh-key', keyFileVariable: 'SSH_KEY_FILE', usernameVariable: 'SSH_USER')]) {
