@@ -35,11 +35,11 @@ pipeline {
                 withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-ssh-key', keyFileVariable: 'SSH_KEY_FILE', usernameVariable: 'SSH_USER')]) {
                     // Deploy API
                     bat """
-                    scp -i %SSH_KEY_FILE% -o StrictHostKeyChecking=no -r api %SSH_USER%@%VM_IP%:/var/app/api/
+                    scp -i %SSH_KEY_FILE% -o StrictHostKeyChecking=no -r api %SSH_USER%@%VM_IP%:/var/api/
                     """
                     // Deploy Frontend
                     bat """
-                    scp -i %SSH_KEY_FILE% -o StrictHostKeyChecking=no -r frontend %SSH_USER%@%VM_IP%:/var/app/frontend/
+                    scp -i %SSH_KEY_FILE% -o StrictHostKeyChecking=no -r frontend %SSH_USER%@%VM_IP%:/var/frontend/
                     """
                 }
             }
