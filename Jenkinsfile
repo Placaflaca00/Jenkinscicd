@@ -36,12 +36,10 @@ pipeline {
                     // Deploy API
                     bat """
                     scp -i %SSH_KEY_FILE% -o StrictHostKeyChecking=no -r api %SSH_USER%@%VM_IP%:/var/app/api/
-                    ssh -i %SSH_KEY_FILE% %SSH_USER%@%VM_IP% 'chmod -R 755 /var/app/api'
                     """
                     // Deploy Frontend
                     bat """
                     scp -i %SSH_KEY_FILE% -o StrictHostKeyChecking=no -r frontend %SSH_USER%@%VM_IP%:/var/app/frontend/
-                    ssh -i %SSH_KEY_FILE% %SSH_USER%@%VM_IP% 'chmod -R 755 /var/app/frontend'
                     """
                 }
             }
