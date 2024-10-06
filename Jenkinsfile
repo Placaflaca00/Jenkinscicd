@@ -18,23 +18,30 @@ pipeline {
             }
         }
         stage('Test') {
-        steps {
-            bat '''
-            set PYTHONPATH=%CD%
-            pytest --junitxml=test-results.xml
-            '''
-        }
-        post {
-            always {
-                junit 'test-results.xml'
+            steps {
+                bat '''
+                set PYTHONPATH=%CD%
+                pytest --junitxml=test-results.xml
+                '''
+            }
+            post {
+                always {
+                    junit 'test-results.xml'
+                }
             }
         }
-    }
-        stage('Deploy') {
+        stage('Deploy API and Frontend') {
             steps {
                 withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-ssh-key', keyFileVariable: 'SSH_KEY_FILE', usernameVariable: 'SSH_USER')]) {
+                    // Deploy API
                     bat """
-                    scp -i %SSH_KEY_FILE% -o StrictHostKeyChecking=no -r app %SSH_USER%@%VM_IP%:/var/app/
+                    scp -i %SSH_KEY_FILE% -o StrictHostKeyChecking=no -r api %SSH_USER%@%VM_IP%:/var/app/api/
+                    ssh -i %SSH_KEY_FILE% %SSH_USER%@%VM_IP% 'chmod -R 755 /var/app/api'
+                    """
+                    // Deploy Frontend
+                    bat """
+                    scp -i %SSH_KEY_FILE% -o StrictHostKeyChecking=no -r frontend %SSH_USER%@%VM_IP%:/var/app/frontend/
+                    ssh -i %SSH_KEY_FILE% %SSH_USER%@%VM_IP% 'chmod -R 755 /var/app/frontend'
                     """
                 }
             }
