@@ -2,7 +2,6 @@
 
 Este proyecto utiliza un pipeline de **Jenkins** para automatizar el despliegue de dos componentes principales: el backend (**API**) y el frontend, en una máquina virtual (VM) alojada en **Google Cloud**. A continuación, se explica cómo está configurado el pipeline y cómo se sincronizan las carpetas entre el repositorio y la VM.
 
-hola
 
 ## Funcionalidad del Pipeline
 
